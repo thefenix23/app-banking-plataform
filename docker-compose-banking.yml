@@ -1,0 +1,23 @@
+services:
+  oracle-19c:
+    image: oracle/database:19.3.0-ee
+    container_name: app-banking-platform
+    environment:
+      ORACLE_SID: ${ORACLE_SID}
+      ORACLE_PDB: ${ORACLE_PDB}
+      ORACLE_PWD: ${ORACLE_PWD}
+      ORACLE_CHARACTERSET: AL32UTF8
+      INIT_SGA_SIZE: "1536"
+      INIT_PGA_SIZE: "512"
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - app-banking-platform-data:/opt/oracle/oradata
+      - ./init/scripts:/opt/oracle/scripts/setup
+    restart: unless-stopped
+    mem_limit: 2g
+
+volumes:
+  app-banking-platform-data:
+    name: app-banking-platform-data

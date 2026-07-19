@@ -1,0 +1,33 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Backend
+backend/target/
+backend/.m2/
+backend/*.jar
+backend/*.war
+backend/.idea/
+backend/.vscode/
+backend/*.log
+
+# Frontend
+banking-frontend/node_modules/
+banking-frontend/dist/
+banking-frontend/.angular/
+banking-frontend/npm-debug.log
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_STORE
+Thumbs.db
+
+# Docker volumes (optional - si quieres reutilizar volúmenes)
+# app-banking-platform-data/
+# pos_oracle/

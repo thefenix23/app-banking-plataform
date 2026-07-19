@@ -1,0 +1,126 @@
+<div class="min-h-screen bg-slate-900 flex flex-col">
+  <!-- Header -->
+  <header class="bg-slate-800 border-b border-slate-700 p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-white">Banking Platform</h1>
+
+      <button
+        (click)="logout()"
+        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition cursor-pointer"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl">
+      <!-- Loading State -->
+      @if (loading()) {
+        <div class="bg-slate-800 rounded-lg shadow-lg p-8 text-center">
+          <div class="inline-block w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p class="text-slate-300 mt-4">Cargando información...</p>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (error() && !loading()) {
+        <div class="bg-red-900 border border-red-700 rounded-lg shadow-lg p-8">
+          <h2 class="text-xl font-bold text-red-200 mb-4">Error</h2>
+          <p class="text-red-200 mb-4">{{ error() }}</p>
+          <button
+            (click)="reload()"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition cursor-pointer"
+          >
+            Reintentar
+          </button>
+        </div>
+      }
+
+      <!-- Status Card -->
+      @if (onboardingStatus() && !loading() && !error()) {
+        <div class="bg-slate-800 rounded-lg shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-white mb-6">Estado de Onboarding</h2>
+
+          <!-- User Info -->
+          <div class="space-y-4 mb-8">
+            <div class="flex justify-between items-center py-3 border-b border-salte-700">
+              <span class="text-slate-400">Email: </span>
+              <span class="text-white font-medium">{{ onboardingStatus()!.email }}</span>
+            </div>
+
+            <div class="flex justify-between items-center py-3 border-b border-slate-700">
+              <span class="text-slate-400">ID de usuario: </span>
+              <span class="text-white font-mono text-sm">{{ onboardingStatus()!.userId }}</span>
+            </div>
+          </div>
+
+          <!-- Status Badge -->
+          <div class="flex justify-between items-center mb-8">
+            <span class="text-slate-400 mb-2">Estado actual: </span>
+            @switch (onboardingStatus()!.onboardingStatus) {
+              @case ('PENDING') {
+                <span class="px-4 py-2 bg-yellow-900 text-yellow-200 rounded-full font-medium">
+                  ⏳ Pendiente de revisión
+                </span>
+              }
+              @case ('IN_REVIEW') {
+                <span class="px-4 py-2 bg-blue-900 text-blue-200 rounded-full font-medium">
+                  🔍 En revisión
+                </span>
+              }
+              @case ('APPROVED') {
+                <span class="px-4 py-2 bg-green-900 text-green-200 rounded-full font-medium">
+                  ✅ Aprovado
+                </span>
+              }
+              @case ('REJECTED') {
+                <span class="px-4 py-2 bg-red-900 text-red-200 rounded-full font-medium">
+                  ✖️ Rechazado
+                </span>
+              }
+            }
+          </div>
+
+          <!-- Status Description -->
+          <div class="bg-slate-700 rounded-lg p-4 mb-8">
+            <p class="text-slate-300 text-sm">
+              @switch (onboardingStatus()!.onboardingStatus) {
+                @case ('PENDING') {
+                  Tu cuenta está siendo procesada. Este proceso normalmente toma 24-48 hrs.
+                }
+                @case ('IN_REVIEW') {
+                  Tu documentación está siendo revisada por nuestro equipo de compliace.
+                }
+                @case ('APPROVED') {
+                  !Felicidades! Tu cuenta ha sido aprobada y ya puedes usar la plataforma.
+                }
+                @case ('REJECTED') {
+                  Tu solicitud ha sido rechazada. Por favor contacta a soporte para más información.
+                }
+              }
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-4">
+            <button
+              (click)="reload()"
+              class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium cursor-pointer"
+            >
+              Actualizar
+            </button>
+
+            <button
+              (click)="logout()"
+              class="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition font-medium cursor-pointer"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </main>
+</div>
